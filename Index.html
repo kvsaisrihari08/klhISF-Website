@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IETE Student Forum</title>
+  <style>
+    .team-back a {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #ffd700;
+  font-weight: bold;
+  transition: color 0.3s, transform 0.2s;
+}
+.team-back a:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Reset and base styling */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  scroll-behavior: smooth;
+  /* Updated background to a lighter gradient for better contrast */
+  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 50%, #f0f4f8 100%),
+              radial-gradient(circle at 20% 80%, rgba(200, 210, 220, 0.3) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
+              radial-gradient(circle at 40% 40%, rgba(200, 210, 220, 0.2) 0%, transparent 50%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.05"/><circle cx="50" cy="50" r="0.5" fill="%23ffffff" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  pointer-events: none;
+  z-index: -1;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* Navbar */
+nav {
+  background: #004080;
+  color: white;
+  padding: 15px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+nav h1 { font-size: 1.6rem; cursor: pointer; }
+nav ul { display: flex; gap: 20px; }
+nav ul li a {
+  color: white;
+  font-weight: bold;
+  transition: 0.3s;
+}
+nav ul li a:hover, nav ul li a.active {
+  color: #ffd700;
+  border-bottom: 2px solid #ffd700;
+  padding-bottom: 2px;
+}
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+  /* Updated gradient with subtle overlay */
+  background: linear-gradient(135deg, rgba(0, 64, 128, 0.85), rgba(234, 237, 239, 0.85));
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.4);
+}
+.hero h2 { font-size: 3rem; margin-bottom: 15px; }
+.hero p { font-size: 1.2rem; margin-bottom: 20px; }
+.hero button {
+  padding: 12px 25px;
+  font-size: 1rem;
+  border: none;
+  background: #ffd700;
+  color: #004080;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.hero button:hover { background: #ffcc00; transform: scale(1.05); }
+
+/* Sections */
+section { padding: 60px 50px; }
+section h2 { text-align: center; margin-bottom: 40px; font-size: 2rem; color: #004080; }
+
+/* About */
+.about p { max-width: 800px; margin: auto; font-size: 1.1rem; text-align: center; color: #222; }
+
+/* Events */
+.events {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #e3f2fd 100%);
+  position: relative;
+  overflow: hidden;
+}
+.events::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(0, 64, 128, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+.events .card-container {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; justify-items: center;
+  position: relative; z-index: 1;
+}
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 30px 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+  transition: left 0.5s;
+}
+.card:hover::before {
+  left: 100%;
+}
+.card:hover {
+  transform: translateY(-15px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2), 0 0 20px rgba(255, 215, 0, 0.3);
+  background: rgba(255, 255, 255, 1);
+}
+.card i {
+  font-size: 3rem;
+  color: #004080;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.card:hover i {
+  transform: scale(1.2) rotate(10deg);
+  color: #ffd700;
+}
+.card h3 {
+  margin-bottom: 15px;
+  color: #004080;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+.card:hover h3 {
+  color: #002b5c;
+}
+.card p {
+  color: #555;
+  line-height: 1.6;
+  transition: color 0.3s ease;
+}
+.card:hover p {
+  color: #333;
+}
+
+/* Floating animation for event cards */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.card {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ---------- TEAM (Carousel + Flip Cards) ---------- */
+.team-carousel {
+  position: relative;
+  overflow: hidden;
+  max-width: 900px;
+  margin: auto;
+}
+.team-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+.team-section {
+  text-align: center;
+  padding: 40px 0;
+  background: #e8f0fa; /* light blue gradient */
+}
+
+.team-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin-top: 30px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.team-card {
+  background: transparent;
+  width: 170px;          /* Reduced width */
+  height: 240px;         /* Reduced height */
+  perspective: 1000px;
+  flex-shrink: 0;
+}
+
+.team-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.team-card:hover .team-inner {
+  transform: rotateY(180deg);
+}
+
+.team-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+}
+
+.team-front {
+  background: #fff;
+}
+
+.team-back {
+  background: #004080;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.team-front img {
+  width: 85px;           /* Smaller image */
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.team-front h3,
+.team-back h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.team-front p,
+.team-back p {
+  font-size: 0.75rem;
+}
+
+.team-back a {
+  color: #ffd700;
+  font-size: 1rem;
+  margin-top: 8px;
+  transition: transform 0.3s;
+}
+.team-back a:hover {
+  transform: scale(1.2);
+}
+
+/* Carousel container */
+.team-carousel {
+  position: relative;
+  overflow: hidden;
+  max-width: 850px;
+  margin: auto;
+  padding: 20px 0;
+}
+
+.team-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  gap: 20px;
+}
+
+/* Navigation Buttons */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 64, 128, 0.8);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 10px 12px;
+  border-radius: 50%;
+  z-index: 10;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.carousel-btn:hover {
+  background: #003366;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.prev { left: 15px; }   /* Moved inside */
+.next { right: 15px; }  /* Moved inside */
+
+
+
+
+/* Gallery */
+.gallery .gallery-grid {
+      columns: 3 280px;
+      column-gap: 18px;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      break-inside: avoid;
+      background: #eee;
+      box-shadow: 0 8px 18px rgba(0,0,0,.10);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .gallery-item:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(0,0,0,.16); }
+    .gallery-item img { width: 100%; display: block; object-fit: cover; transition: transform .5s ease; }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0));
+      opacity: 0; transition: opacity .35s ease;
+      display: flex; align-items: flex-end; padding: 14px;
+    }
+    .gallery-item:hover .overlay { opacity: 1; }
+    .overlay span {
+      color: #fff; font-weight: 600; letter-spacing: .2px;
+      background: rgba(255,255,255,.12);
+      padding: 6px 10px; border-radius: 8px;
+      backdrop-filter: blur(2px);
+    }
+/* Lightbox */
+.lightbox {
+  position: fixed; inset: 0; background: rgba(0,0,0,.85);
+  display: none; align-items: center; justify-content: center;
+  z-index: 2000; padding: 24px;
+}
+.lightbox.open { display: flex; }
+.lightbox img { max-width: min(1100px, 92vw); max-height: 86vh; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,.45); }
+.lightbox .close-btn {
+  position: absolute; top: 18px; right: 22px;
+  background: #ffffff; color: #002b5c; border: none; cursor: pointer;
+  padding: 10px 12px; border-radius: 10px; font-weight: 700;
+  box-shadow: 0 8px 18px rgba(0,0,0,.25);
+}
+.lightbox .close-btn:hover { background: #ffd700; color: #002b5c; }
+
+/* Contact */
+.contact form {
+  max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 15px;
+}
+.contact input, .contact textarea {
+  padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.contact input:focus, .contact textarea:focus {
+  outline: none; border-color: #1f8ceb; box-shadow: 0 0 0 3px rgba(31,140,235,.15);
+}
+.contact button {
+  background: #004080; color: white; padding: 12px; border: none; border-radius: 5px;
+  cursor: pointer; font-size: 1rem; transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.contact button:hover { background: #0066cc; transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.12); }
+
+/* Footer */
+footer { background: #004080; color: white; text-align: center; padding: 15px; }
+
+/* Responsive tweaks */
+@media (max-width: 520px) {
+  section { padding: 54px 22px; }
+}
+
+/* Scroll to Top Button */
+#scrollToTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #004080;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 50%;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+#scrollToTopBtn:hover {
+  background-color: #0066cc;
+  transform: scale(1.1);
+}
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div style="display: flex; align-items: center;">
+      <img src="ISF logo.jpg" alt="IETE Student Forum Logo" style="height: 40px; margin-right: 10px;">
+      <h1 onclick="scrollToHome()">IETE Student Forum</h1>
+    </div>
+    <ul>
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero" data-aos="fade-up">
+    <div>
+      <h2>Welcome to IETE Student Forum</h2>
+      <p>Empowering students in building skills both hardware and software</p>
+      <button onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Learn More</button>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about" data-aos="fade-up">
+    <h2>About Us</h2>
+    <p>
+      The IETE Student Forum (ISF) is a vibrant platform dedicated to fostering technical knowledge, innovation, and professional development among students in the fields of electronics, telecommunications, and information technology. As an integral part of the Institution of Electronics and Telecommunication Engineers (IETE), ISF aims to bridge the gap between academic learning and industry demands.</br>
+    Our forum encourages collaboration, learning, and leadership through various activities such as technical workshops, seminars, competitions, guest lectures, and industrial visits. ISF provides students with a unique opportunity to engage with experts, stay updated with emerging technologies, and develop essential skills to excel in their careers.</br>
+    We believe in empowering students to become future-ready professionals and innovators by promoting a culture of continuous learning and creativity. Join us to connect, learn, and grow as a community passionate about technology and engineering excellence.
+    </p>
+  </section>
+
+  <!-- Events Section -->
+  <section id="events" class="events" data-aos="fade-up">
+    <h2>Our Events</h2>
+    <div class="card-container">
+      <div class="card"><i class="fas fa-tools"></i><h3>Workshop</h3><p>Hands-on training sessions to learn latest technologies.</p></div>
+      <div class="card"><i class="fas fa-chalkboard-teacher"></i><h3>Seminar</h3><p>Expert talks and interactive sessions for knowledge sharing.</p></div>
+      <div class="card"><i class="fas fa-code"></i><h3>Hackathon</h3><p>Innovative coding challenges to solve real-world problems.</p></div>
+    </div>
+  </section>
+
+<!-- Team Section -->
+<section id="team" data-aos="fade-up">
+  <h2>Meet Our Team</h2>
+  <div class="team-carousel">
+    <button class="carousel-btn prev"><i class="fas fa-chevron-left"></i></button>
+    <div class="team-track">
+      
+      <!-- Member 1 -->
+      <div class="team-card">
+        <div class="team-inner">
+          <!-- Front -->
+          <div class="team-face team-front">
+            <img src="Kalyan Sir.jpg" alt="Kalyan Kasturi">
+            <h3>Kalyan Kasturi</h3>
+            <p>President</p>
+          </div>
+          <!-- Back -->
+          <div class="team-face team-back">
+            <h3>Kalyan Kasturi</h3>
+            <p>Leads the IETE forum with vision, dedication, and teamwork skills.</p>
+            <a href="https://www.linkedin.com/in/kalyan-kasturi-2348a125/" target="_blank" class="linkedin-icon"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Member 2 -->
+      <div class="team-card">
+        <div class="team-inner">
+          <div class="team-face team-front">
+            <img src="Hari.png" alt="K V Sai SriHari">
+            <h3>K V Sai SriHari</h3>
+            <p>Vice President</p>
+          </div>
+          <div class="team-face team-back">
+            <h3>K V Sai SriHari</h3>
+            <p>Works on strategy, project planning, and student engagement activities.</p>
+            <a href="https://www.linkedin.com/in/katikala-venkata-sai-srihari-ba929a289/" target="_blank" class="linkedin-icon"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    <!-- Member 3 -->
+      <div class="team-card">
+        <div class="team-inner">
+          <!-- Front -->
+          <div class="team-face team-front">
+            <img src="Charitha.png" alt="Charitha">
+            <h3>Charitha</h3>
+            <p>General Secretary</p>
+          </div>
+          <!-- Back -->
+          <div class="team-face team-back">
+            <h3>Charitha</h3>
+            <p>Handles official records, assists in planning, and ensures smooth execution of forum activities.</p>
+            <a href="https://www.linkedin.com/in/sree-charitha-thunga-378103299/" target="_blank" class="linkedin-icon"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Member 4 -->
+      <div class="team-card">
+        <div class="team-inner">
+          <div class="team-face team-front">
+            <img src="nikhil.jpeg" alt="T Sai Nikhil">
+            <h3>T Sai Nikhil</h3>
+            <p>Secretary</p>
+          </div>
+          <div class="team-face team-back">
+            <h3>T Sai Nikhil</h3>
+            <p>Responsible for communication, event scheduling, and coordination.</p>
+            <a href="https://www.linkedin.com/in/sai-nikhil-t-95a90622a/" target="_blank" class="linkedin-icon"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+<!-- Member 5 -->
+<div class="team-card">
+  <div class="team-inner">
+    <div class="team-face team-front">
+      <img src="Chandana.jpg" alt="Sai Chandana">
+      <h3>Sai Chandana</h3>
+      <p>Treasurer</p>
+    </div>
+    <div class="team-face team-back">
+      <h3>Sai Chandana</h3>
+      <p>Manages financial records, budgeting, and ensures transparent handling of forum funds.</p>
+      <a href="https://www.linkedin.com/in/chandana2005/" target="_blank" class="linkedin-icon"><i class="fab fa-linkedin"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- Member 6 -->
+<div class="team-card">
+  <div class="team-inner">
+    <div class="team-face team-front">
+            <img src="ashwini.jpg" alt="Ashwini">
+      <h3>Ashwini</h3>
+      <p>Membership Incharge</p>
+    </div>
+    <div class="team-face team-back">
+      <h3>Ashwini</h3>
+      <p>Handles student registrations, maintains membership database, and encourages active participation.</p>
+      <a href="https://www.linkedin.com/in/ashwinitegiri/" target="_blank" class="linkedin-icon"><i class="fab fa-linkedin"></i></a>
+    </div>
+  </div>
+</div>
+      <!-- Add more members in the same structure -->
+    </div>
+    <button class="carousel-btn next"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+
+<!-- Gallery Section -->
+<section id="gallery" class="gallery" data-aos="fade-up">
+  <h2>Gallery</h2>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="g1.jpg" alt="Event 1" onerror="this.src='https://picsum.photos/600/400?random=1'"><div class="overlay"><span>Workshop Highlights</span></div></div>
+    <div class="gallery-item"><img src="g2.jpg" alt="Event 2" onerror="this.src='https://picsum.photos/600/800?random=2'"><div class="overlay"><span>Hackathon</span></div></div>
+    <div class="gallery-item"><img src="g3.jpg" alt="Event 3" onerror="this.src='https://picsum.photos/600/500?random=3'"><div class="overlay"><span>Seminar</span></div></div>
+    <div class="gallery-item"><img src="g4.jpg" alt="Event 4" onerror="this.src='https://picsum.photos/600/700?random=4'"><div class="overlay"><span>Project Expo</span></div></div>
+    <div class="gallery-item"><img src="g5.jpg" alt="Event 5" onerror="this.src='https://picsum.photos/600/600?random=5'"><div class="overlay"><span>Industry Visit</span></div></div>
+    <div class="gallery-item"><img src="g6.jpg" alt="Event 6" onerror="this.src='https://picsum.photos/600/650?random=6'"><div class="overlay"><span>Team Meetup</span></div></div>
+  </div>
+</section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact" data-aos="fade-up">
+    <h2>Contact Us</h2>
+    <p style="text-align:center; font-size:1.1rem; margin-bottom: 20px;">
+      <span><i class="fas fa-envelope"></i> kvsaisrihariisf@gmail.com</span>
+    </p>
+  </section>
+
+
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox">
+  <button class="close-btn">Close ✕</button>
+  <img id="lightbox-img" alt="Preview"/>
+</div>
+
+<!-- JS -->
+  <!-- Navbar highlight--> 
+<script>
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll("nav ul li a");
+  window.onscroll = () => {
+    let current = "";
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 100;
+      if (pageYOffset >= sectionTop) current = section.getAttribute("id");
+    });
+    navLinks.forEach(link => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === "#" + current) link.classList.add("active");
+    });
+  };
+  function scrollToHome() {
+    document.getElementById("home").scrollIntoView({behavior:"smooth"});
+  }
+
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  document.querySelectorAll('.gallery-item img').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightbox.classList.add('open');
+    });
+  });
+  document.querySelector('.close-btn').addEventListener('click', () => lightbox.classList.remove('open'));
+
+  // Carousel
+const track = document.querySelector('.team-track');
+const prevBtn = document.querySelector('.carousel-btn.prev');
+const nextBtn = document.querySelector('.carousel-btn.next');
+
+let index = 0;
+const visibleCards = 4; // number of cards visible per view
+const cardWidth = document.querySelector('.team-card').offsetWidth + 25; // exact card width + gap
+const totalCards = track.children.length;
+
+// number of full groups (each group = 4 cards)
+const maxIndex = Math.ceil(totalCards / visibleCards) - 1;
+
+function updateCarousel() {
+  const offset = index * visibleCards * cardWidth;
+  track.style.transform = `translateX(-${offset}px)`;
+}
+
+
+prevBtn.addEventListener('click', () => {
+  index = Math.max(index - 1, 0);
+  updateCarousel();
+});
+
+nextBtn.addEventListener('click', () => {
+  index = Math.min(index + 1, maxIndex);
+  updateCarousel();
+});
+
+
+
+  // Parallax effect for hero
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const hero = document.querySelector('.hero');
+    hero.style.backgroundPositionY = -(scrolled * 0.5) + 'px';
+  });
+
+  // Typing animation with blinking cursor
+  const text = "Welcome to IETE Student Forum";
+  let i = 0;
+  const h2 = document.querySelector('.hero h2');
+  h2.innerHTML = '<span id="typed-text"></span><span id="cursor">|</span>';
+
+  const typedText = document.getElementById('typed-text');
+  const cursor = document.getElementById('cursor');
+
+  function typeWriter() {
+    if (i < text.length) {
+      typedText.textContent += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, 100);
+    }
+  }
+
+  // Blinking cursor effect
+  setInterval(() => {
+    cursor.style.visibility = (cursor.style.visibility === 'hidden') ? 'visible' : 'hidden';
+  }, 500);
+
+  window.onload = typeWriter;
+
+  // Initialize AOS
+  AOS.init({ duration: 1000, once: true });
+  </script>
+
+  <button id="scrollToTopBtn" title="Go to top"><i class="fas fa-chevron-up"></i></button>
+
+  <script>
+    //Get the button
+    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+    // When the user scrolls down 100px from the top of the document, show the button
+    window.onscroll = function() {
+      if (window.pageYOffset > 100) {
+        scrollToTopBtn.style.display = "block";
+      } else {
+        scrollToTopBtn.style.display = "none";
+      }
+    };
+
+    // When the user clicks on the button, scroll to the top of the document
+    scrollToTopBtn.addEventListener("click", function() {
+      document.getElementById("home").scrollIntoView({behavior: "smooth"});
+    });
+  </script>
+
+</body>
+</html>
